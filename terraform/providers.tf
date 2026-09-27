@@ -5,7 +5,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 6.0"
     }
-    # Permet de déclarer les hôtes Ansible dans Terraform (inventaire dynamique)
     ansible = {
       source  = "ansible/ansible"
       version = "~> 1.3"
@@ -14,13 +13,17 @@ terraform {
       source  = "hashicorp/random"
       version = "~> 3.6"
     }
+    # Sert à détecter l'IP publique de la personne qui déploie
+    http = {
+      source  = "hashicorp/http"
+      version = "~> 3.4"
+    }
   }
 }
 
 provider "aws" {
   region = var.region
 
-  # Tags ajoutés automatiquement à toutes les ressources AWS
   default_tags {
     tags = {
       Project     = var.project_name

@@ -9,3 +9,9 @@ variable "project_name" {
   type        = string
   default     = "taylor-shift"
 }
+
+variable "vpc_cidr" {
+  description = "Plage d'adresses IP du VPC"
+  type        = string
+  default     = "10.0.0.0/16"
+}
