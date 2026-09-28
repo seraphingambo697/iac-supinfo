@@ -1,0 +1,5 @@
+# ansible 13.x = ansible-core 2.20
+# (ansible-core 2.21 est incompatible avec cloud.terraform 4.0.0)
+ansible>=13,<14
+boto3
+botocore

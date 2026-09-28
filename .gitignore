@@ -8,3 +8,4 @@ crash.log
 # Secrets / clés
 .vault_pass*
 *.pem
+.venv/

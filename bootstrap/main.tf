@@ -1,6 +1,10 @@
 terraform {
   required_version = ">= 1.10"
   required_providers {
+    local = {
+      source  = "hashicorp/local"
+      version = "~> 2.5"
+    }
     aws = {
       source  = "hashicorp/aws"
       version = "~> 6.0"
@@ -48,4 +52,23 @@ resource "aws_s3_bucket_public_access_block" "tfstate" {
   block_public_policy     = true
   ignore_public_acls      = true
   restrict_public_buckets = true
+}
+
+# Génère terraform/backend.tf avec le bucket de CE compte AWS :
+# le projet principal est ainsi utilisable sur n'importe quel compte.
+resource "local_file" "backend" {
+  filename        = "${path.module}/../terraform/backend.tf"
+  file_permission = "0644"
+  content         = <<-EOT
+    # Fichier généré par bootstrap/ : ne pas modifier à la main
+    terraform {
+      backend "s3" {
+        bucket       = "${aws_s3_bucket.tfstate.bucket}"
+        key          = "taylor-shift/terraform.tfstate"
+        region       = "${var.region}"
+        encrypt      = true
+        use_lockfile = true
+      }
+    }
+  EOT
 }
