@@ -17,3 +17,13 @@ output "efs_id" {
   description = "ID du système de fichiers EFS"
   value       = module.storage.efs_id
 }
+
+output "app_url" {
+  description = "URL publique de la boutique PrestaShop"
+  value       = "http://${module.alb.dns_name}"
+}
+
+output "web_public_ips" {
+  description = "IP publiques des EC2"
+  value       = module.compute.public_ips
+}
