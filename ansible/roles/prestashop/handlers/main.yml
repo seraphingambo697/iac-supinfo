@@ -1,5 +1,14 @@
+# Le handler redéclare le conteneur complet : sinon le module
+# le recrée sans ports, sans variables d'environnement ni volume.
 - name: Redemarrer PrestaShop
   community.docker.docker_container:
     name: prestashop
+    image: "prestashop/prestashop:{{ ps_version }}"
     state: started
     restart: true
+    restart_policy: always
+    published_ports:
+      - "80:80"
+    env_file: "{{ ps_config_dir }}/prestashop.env"
+    volumes:
+      - "{{ ps_data_dir }}:/var/www/html"
