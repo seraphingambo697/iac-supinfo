@@ -1,0 +1,8 @@
+- name: Déployer PrestaShop sur les serveurs web
+  hosts: web
+  become: true
+  roles:
+    - common
+    - geerlingguy.docker
+    - efs_mount
+    - prestashop

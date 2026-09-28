@@ -1,0 +1,3 @@
+# Inventaire dynamique : les hôtes viennent du state Terraform (ressources ansible_host)
+plugin: cloud.terraform.terraform_provider
+project_path: terraform

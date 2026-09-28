@@ -1,0 +1,9 @@
+ps_version: "8.2"
+ps_config_dir: /opt/prestashop
+ps_data_dir: /mnt/efs/prestashop
+ps_admin_folder: admin-ts
+ps_install_folder: install-ts
+ps_language: fr
+ps_country: FR
+# Seule cette instance lance l'installation de la base
+ps_installer: "{{ groups['web'][0] }}"

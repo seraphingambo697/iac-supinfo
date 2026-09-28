@@ -1,0 +1,8 @@
+collections:
+  - name: cloud.terraform
+  - name: community.docker
+  - name: amazon.aws
+  - name: ansible.posix
+
+roles:
+  - name: geerlingguy.docker

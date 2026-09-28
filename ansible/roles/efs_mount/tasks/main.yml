@@ -1,0 +1,13 @@
+- name: Créer le point de montage
+  ansible.builtin.file:
+    path: "{{ efs_mount_point }}"
+    state: directory
+    mode: "0755"
+
+- name: Monter EFS et l'inscrire dans /etc/fstab
+  ansible.posix.mount:
+    src: "{{ efs_dns_name }}:/"
+    path: "{{ efs_mount_point }}"
+    fstype: nfs4
+    opts: "{{ efs_mount_opts }}"
+    state: mounted

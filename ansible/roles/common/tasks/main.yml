@@ -1,0 +1,8 @@
+- name: Installer les paquets de base
+  ansible.builtin.apt:
+    name:
+      - nfs-common        # client NFS pour monter EFS
+      - python3-requests  # requis par les modules community.docker
+    state: present
+    update_cache: true
+    cache_valid_time: 3600

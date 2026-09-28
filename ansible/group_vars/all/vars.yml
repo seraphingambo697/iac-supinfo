@@ -1,0 +1,9 @@
+# Les secrets viennent du Vault, jamais écrits en clair ici
+ps_admin_email: "{{ vault_ps_admin_email }}"
+ps_admin_password: "{{ vault_ps_admin_password }}"
+
+ps_version: "8.2"
+
+# Rôle Galaxy geerlingguy.docker : Docker seul suffit
+docker_install_compose_plugin: false
+docker_install_compose: false

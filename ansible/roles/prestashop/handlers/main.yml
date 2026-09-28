@@ -1,0 +1,5 @@
+- name: Redemarrer PrestaShop
+  community.docker.docker_container:
+    name: prestashop
+    state: started
+    restart: true

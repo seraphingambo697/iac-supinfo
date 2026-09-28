@@ -1,0 +1,48 @@
+- name: Lire le mot de passe de la base dans SSM Parameter Store
+  ansible.builtin.set_fact:
+    db_password: "{{ lookup('amazon.aws.ssm_parameter', db_password_ssm, region=aws_region) }}"
+  no_log: true
+
+- name: Créer le dossier de configuration
+  ansible.builtin.file:
+    path: "{{ ps_config_dir }}"
+    state: directory
+    mode: "0750"
+
+- name: Créer le dossier PrestaShop sur EFS (partagé entre les instances)
+  ansible.builtin.file:
+    path: "{{ ps_data_dir }}"
+    state: directory
+
+- name: Générer le fichier de configuration à partir du template
+  ansible.builtin.template:
+    src: prestashop.env.j2
+    dest: "{{ ps_config_dir }}/prestashop.env"
+    mode: "0600"
+  no_log: true
+  notify: Redemarrer PrestaShop
+
+- name: Télécharger l'image Docker PrestaShop
+  community.docker.docker_image:
+    name: prestashop/prestashop
+    tag: "{{ ps_version }}"
+    source: pull
+
+- name: Démarrer l'instance qui installe PrestaShop
+  ansible.builtin.include_tasks: container.yml
+  when: inventory_hostname == ps_installer
+
+- name: Attendre la fin de l'installation (peut prendre plusieurs minutes)
+  ansible.builtin.uri:
+    url: http://localhost/
+    follow_redirects: none
+    status_code: [200, 301, 302]
+  register: ps_ready
+  until: ps_ready.status in [200, 301, 302]
+  retries: 90
+  delay: 10
+  when: inventory_hostname == ps_installer
+
+- name: Démarrer les autres instances (installation déjà faite)
+  ansible.builtin.include_tasks: container.yml
+  when: inventory_hostname != ps_installer
