@@ -1,4 +1,4 @@
-# Les secrets viennent du Vault, jamais écrits en clair ici
+# Les secrets viennent du Vault, jamais écrits en clair 
 ps_admin_email: "{{ vault_ps_admin_email }}"
 ps_admin_password: "{{ vault_ps_admin_password }}"
 
